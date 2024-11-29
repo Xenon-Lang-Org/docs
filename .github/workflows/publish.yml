@@ -10,6 +10,7 @@ on:
 
 env:
   MD_BOOK_VERSION: 0.4.40
+  BOOK_SRC: .
 
 jobs:
   deploy:
@@ -27,7 +28,7 @@ jobs:
 
     - name: Build the book
       run: |
-        mdbook build docs
+        mdbook build ${{ env.BOOK_SRC }}
 
     - name: Deploy to gh-pages
       env:
