@@ -18,3 +18,7 @@ graph TD;
     B-->D;
     C-->D;
 ```
+
+```myLanguage
+// Your custom language code here
+```
