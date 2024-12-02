@@ -1,4 +1,4 @@
 # Summary
 
 - [Requirements](./requirements.md)
-- [HighLight](./highlighttest.md)
+- [Snippets](./snippets.md)
