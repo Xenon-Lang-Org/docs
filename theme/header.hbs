@@ -1,6 +1,9 @@
+<script src="myLanguage.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Re-highlight after custom language registration
+        // Reset the initialization flag
+        hljs.initHighlighting.called = false;
+        // Re-run the highlighting
         hljs.initHighlighting();
     });
 </script>
