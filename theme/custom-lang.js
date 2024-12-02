@@ -16,3 +16,5 @@ hljs.registerLanguage('mylang', function (hljs) {
         ]
     };
 });
+
+console.log('Custom language "mylang" registered.');
