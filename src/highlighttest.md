@@ -1,9 +1,4 @@
 
-```glados-lang
-if else salut ça va while for
-#woaw 
-nothing
-```
 
 ```shell
 if else salut ça va while for
@@ -20,5 +15,8 @@ graph TD;
 ```
 
 ```myLanguage
-// Your custom language code here
+// hello i'm comment
+if (x == 42) {
+    console.log("Hello World!");
+}
 ```
