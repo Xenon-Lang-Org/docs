@@ -18,3 +18,8 @@ hljs.registerLanguage('mylang', function (hljs) {
 });
 
 console.log('Custom language "mylang" registered.');
+
+// Highlight all code blocks using the updated API
+document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightElement(block);
+});
