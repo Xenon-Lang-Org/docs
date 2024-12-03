@@ -5657,7 +5657,7 @@
               literal: 'true false',
             },
             contains: [
-              hljs.COMMENT('//', '\n'), // Single-line comments
+              hljs.COMMENT('//', '$'), // Single-line comments
               hljs.COMMENT('/\\*', '\\*/'), // Multi-line comments
               {
                 className: 'none', // Match built-in types and modifiers
@@ -5676,7 +5676,7 @@
               },
               {
                 className: 'function', // Function declarations
-                Match: /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/,
+                match: /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/,
               },
               {
                 className: 'number', // Numbers
