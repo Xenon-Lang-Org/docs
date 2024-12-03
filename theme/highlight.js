@@ -5660,10 +5660,15 @@
               hljs.COMMENT('//', '\n'), // Single-line comments
               hljs.COMMENT('/\\*', '\\*/'), // Multi-line comments
               {
-                className: 'type', // Match built-in types and modifiers
+                className: 'none', // Match built-in types and modifiers
                 begin: /(->\s*)?/,
-                match: /:?\s*(\*?\s*(mut\s+)?)*\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
                 end: /.*/,
+                contains: [
+                  {
+                    className: 'type', // Built-in types
+                    match: /:?\s*(\*?\s*(mut\s+)?)*\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
+                  }
+                ],
               },
               {
                 className: 'keyword', // Keywords like 'let', 'fn', etc.
@@ -5698,5 +5703,5 @@
           };
         };
       
-        hljs.registerLanguage('Xenon', hljsGrammar);
+        hljs.registerLanguage('GladosLang', hljsGrammar);
       })();
