@@ -5647,99 +5647,42 @@
 // DO NOT REMOVE OR MODIFY THIS COMMENT v
 // -- XENON LANG -- //
 
-
     (function() {
         const hljsGrammar = function(hljs) {
           return {
-            name: 'GladosLang',
-            aliases: ['gladoslang', 'glados', 'gl'],
+            name: 'Xenon',
+            aliases: ['xenon', 'xn'],
             keywords: {
-              keyword: 'mut let fn while if elif else return type',
-              literal: 'true false null',
+              keyword: 'let fn while if elif else return type',
+              literal: 'true false',
             },
             contains: [
-              hljs.COMMENT('//', '$'), // Single-line comments
+              hljs.COMMENT('//', '\n'), // Single-line comments
               hljs.COMMENT('/\\*', '\\*/'), // Multi-line comments
               {
                 className: 'type', // Match built-in types and modifiers
-                match: /:\s*\*?(mut\s+)?\b(i32|u32|f32|f64|bool|char|void)\b/,
-              },
-              {
-                className: 'type', // Match custom types like ': ReturnType'
-                match: /:\s*\b[A-Z][a-zA-Z0-9_]*\b/,
-              },
-              {
-                className: 'type', // Match return types after '->'
-                begin: /->\s*/,
-                end: /\b(i32|u32|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
-                excludeBegin: true,
+                begin: /(->\s*)?/,
+                match: /:?\s*(\*?\s*(mut\s+)?)*\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
+                end: /.*/,
               },
               {
                 className: 'keyword', // Keywords like 'let', 'fn', etc.
-                match: /\b(mut|let|fn|while|if|elif|else|return|type)\b/,
+                match: /\b(let|fn|while|if|elif|else|return|type)\b/,
               },
               {
                 className: 'function', // Function declarations
-                beginKeywords: 'fn',
-                end: /\{/,
-                excludeEnd: true,
-                contains: [
-                  {
-                    className: 'title.function', // Function name
-                    begin: /\b[a-zA-Z_][a-zA-Z0-9_]*\b/,
-                    relevance: 0,
-                  },
-                  {
-                    className: 'params',
-                    begin: /\(/,
-                    end: /\)/,
-                    contains: [
-                      {
-                        className: 'variable', // Function parameter names
-                        begin: /\b[a-zA-Z_][a-zA-Z0-9_]*\b/,
-                        relevance: 0,
-                      },
-                      {
-                        className: 'type', // Parameter types
-                        match: /:\s*\*?(mut\s+)?\b(i32|u32|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
-                      },
-                    ],
-                  },
-                ],
+                Match: /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/,
               },
               {
                 className: 'number', // Numbers
                 variants: [
-                  { begin: /\b\d+(_\d+)*\b/ }, // Integer literals
-                  { begin: /\b0x[0-9a-fA-F]+\b/ }, // Hexadecimal literals
+                  { begin: /\b[0-9]+[.]?[0-9]*\b/ },
                 ],
               },
               {
                 className: 'string', // Strings
                 variants: [
-                  { begin: /"/, end: /"/, contains: [hljs.BACKSLASH_ESCAPE] },
-                  { begin: /'/, end: /'/, contains: [hljs.BACKSLASH_ESCAPE] },
-                ],
-              },
-              {
-                className: 'meta', // Structs and enums
-                beginKeywords: 'type',
-                end: /[{;]/,
-                excludeEnd: true,
-                contains: [
-                  {
-                    className: 'title.class', // Name of the type
-                    begin: /\b[A-Z][a-zA-Z0-9_]*\b/,
-                    relevance: 0,
-                  },
-                  {
-                    className: 'meta', // Inside the enum or struct body
-                    begin: /<|{|=/,
-                    end: /[>;|}]/,
-                    excludeBegin: true,
-                    excludeEnd: true,
-                    relevance: 0,
-                  },
+                  { begin: /\"/, end: /\"/, contains: [hljs.BACKSLASH_ESCAPE] },
                 ],
               },
               {
@@ -5749,7 +5692,7 @@
               },
               {
                 className: 'built_in', // Built-in operators and pointers
-                match: /\*|@|&/,
+                match: /@|&/,
               },
             ],
           };
@@ -5757,4 +5700,3 @@
       
         hljs.registerLanguage('GladosLang', hljsGrammar);
       })();
-      
