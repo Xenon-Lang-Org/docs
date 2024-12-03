@@ -5698,5 +5698,5 @@
           };
         };
       
-        hljs.registerLanguage('GladosLang', hljsGrammar);
+        hljs.registerLanguage('Xenon', hljsGrammar);
       })();
