@@ -5661,10 +5661,14 @@
               hljs.COMMENT('/\\*', '\\*/'), // Multi-line comments
               {
                 className: 'type', // Match built-in types and modifiers
-                begin: /(->\s*)?/,
+                match: /:?\s*(\*?\s*(mut\s+)?)*\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
+              },
+              {
+                className: 'type', // Match return types after '->'
+                begin: /->\s*/,
                 end: /:?\s*(\*?\s*(mut\s+)?)*\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
-                exludedBegin: true,
-                exludedEnd: false,
+                excludeBegin: true,
+                excludeEnd: false,
               },
               {
                 className: 'keyword', // Keywords like 'let', 'fn', etc.
