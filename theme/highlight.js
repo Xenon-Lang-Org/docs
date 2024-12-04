@@ -5660,15 +5660,11 @@
               hljs.COMMENT('//', '$'), // Single-line comments
               hljs.COMMENT('/\\*', '\\*/'), // Multi-line comments
               {
-                className: 'none', // Match built-in types and modifiers
+                className: 'type', // Match built-in types and modifiers
                 begin: /(->\s*)?/,
-                end: /.*/,
-                contains: [
-                  {
-                    className: 'type', // Built-in types
-                    match: /:?\s*(\*?\s*(mut\s+)?)*\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
-                  }
-                ],
+                end: /:?\s*(\*?\s*(mut\s+)?)*\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
+                exludedBegin: true,
+                exludedEnd: false,
               },
               {
                 className: 'keyword', // Keywords like 'let', 'fn', etc.
@@ -5676,6 +5672,33 @@
               },
               {
                 className: 'function', // Function declarations
+                beginKeywords: 'fn',
+                end: /\{/,
+                excludeEnd: true,
+                contains: [
+                  {
+                    className: 'title.function',
+                    begin: /\b[a-zA-Z_][a-zA-Z0-9_]*\b/,
+                  },
+                  {
+                    className: 'params',
+                    begin: /\(/,
+                    end: /\)/,
+                    contains: [
+                      {
+                        className: 'variable',
+                        begin: /\b[a-zA-Z_][a-zA-Z0-9_]*\b/,
+                      },
+                      {
+                        className: 'type',
+                        match: /:?\s*(\*?\s*(mut\s+)?)*\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|char|void|[A-Z][a-zA-Z0-9_]*)\b/,
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                className: 'function.call', // Function calls
                 match: /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/,
               },
               {
