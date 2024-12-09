@@ -1,4 +1,4 @@
 # Summary
 
 - [Requirements](./requirements.md)
-- [Snippets](./snippets.md)
+- [Syntax](syntax.md)
