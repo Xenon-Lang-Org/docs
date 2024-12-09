@@ -1,4 +1,5 @@
 # Summary
 
 - [Requirements](./requirements.md)
-- [Syntax](syntax.md)
+- [Comparative Study](./comparative-study.md)
+- [Syntax](./syntax.md)
