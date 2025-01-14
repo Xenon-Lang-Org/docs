@@ -1,6 +1,6 @@
 # Security Features Implemented
 
-In the Xenon compiler, several security features have been implemented to ensure the safety and reliability of the compiled code. These features are inspired by the security principles found in languages like Rust, which prioritize memory safety, type safety, and concurrency safety. Below is a description of the key security features implemented in the Xenon compiler:
+In the Xenon compiler, several security features have been implemented to ensure the safety and reliability of the compiled code. These features are inspired by the security principles found in languages like Rust, which prioritize memory safety and type safety. Below is a description of the key security features implemented in the Xenon compiler:
 
 ## Memory Safety
 
@@ -68,4 +68,4 @@ The compiler provides descriptive error messages, helping users understand and f
 
 ## Conclusion
 
-The Xenon compiler incorporates several security features inspired by Rust to ensure the safety and reliability of the compiled code. These features include memory safety, type safety, concurrency safety, semantic analysis, safe code generation, and robust error handling. By prioritizing these security principles, the Xenon compiler aims to provide a secure and reliable foundation for writing and executing Xenon programs.
+The Xenon compiler incorporates several security features inspired by Rust to ensure the safety and reliability of the compiled code. These features include memory safety, type safety, semantic analysis, safe code generation, and robust error handling. By prioritizing these security principles, the Xenon compiler aims to provide a secure and reliable foundation for writing and executing Xenon programs.
