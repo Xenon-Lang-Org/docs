@@ -5,3 +5,4 @@
 - [Syntax](./syntax.md)
 - [Compilation Process](./compilation_process.md)
 - [BNF](./xenon.bnf)
+- [Inspirations](./inspirations.md)
