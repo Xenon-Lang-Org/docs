@@ -120,9 +120,6 @@ let x: i32 = p[0]; // x = 1
 let y: i32 = p[1]; // y = 2
 ```
 
-## Enums
-
-// TODO :,)
 ## Arrays
 
 Arrays are declared with the `[size: type]` syntax.
