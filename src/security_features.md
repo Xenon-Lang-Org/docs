@@ -6,13 +6,9 @@ In the Xenon compiler, several security features have been implemented to ensure
 
 Memory safety is a critical aspect of the Xenon compiler, ensuring that programs do not encounter common memory-related vulnerabilities such as buffer overflows, use-after-free errors, and null pointer dereferences.
 
-### Ownership and Borrowing
+### No Memory Usage
 
-Inspired by Rust's ownership model, Xenon enforces strict rules on how memory is accessed and managed. Each piece of data has a single owner, and the compiler ensures that references to data do not outlive the data they point to.
-
-### No Null Pointers
-
-Xenon does not allow null pointers, eliminating a common source of bugs and security vulnerabilities.
+Xenon does not allow memory usage, which is very safe, eliminating a common source of bugs and security vulnerabilities.
 
 ## Type Safety
 
@@ -22,9 +18,9 @@ Type safety ensures that operations on data are performed in a manner consistent
 
 Xenon uses a strong static type system to catch type errors at compile time. This reduces the likelihood of runtime errors and ensures that operations on data are type-safe.
 
-### Option and Result Types
+### Const and Mutable Variables
 
-Xenon encourages the use of Option and Result types for handling nullable values and error handling, respectively. This reduces the likelihood of null pointer dereferences and unhandled errors.
+Xenon distinguishes between const and mutable variables, allowing developers to control the mutability of data. This helps prevent unintended modifications to data and ensures that data is accessed safely.
 
 ## Semantic Analysis
 
