@@ -19,6 +19,12 @@ Then, simply run the program:
 ./xin
 ```
 
+To run a single file without starting the command line interface, use the `-e` flag. Note that this execution mode will print the output of functions onto the terminal.
+
+```sh
+./xin -e main.xn
+```
+
 You can also pre-load Xenon files while launching it:
 
 ```sh
