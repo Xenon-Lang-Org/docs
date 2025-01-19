@@ -36,11 +36,12 @@
                | <function_call>
                | "(" <expression> ")"
 
-<binary_operation> ::= <expression> <binary_operator> <expression>
-<binary_operator> ::= "+" | "-" | "*" | "/" | "&&" | "||" | "==" | "!=" | "<" | ">" | "<=" | ">="
+<binary_operator> ::= "+" | "-" | "*" | "/" 
+                   | "&&" | "||" 
+                   | "==" | "!=" | "<" | ">" | "<=" | ">=" 
+                   | "&" | "|" | "^" | "<<" | ">>"
 
-<unary_operation> ::= <unary_operator> <expression>
-<unary_operator> ::= "!" | "-"
+<unary_operator> ::= "!" | "-" | "~"
 
 <function_call> ::= <identifier> "(" <arguments> ")"
 <arguments> ::= <expression> ("," <expression>)*
