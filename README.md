@@ -54,3 +54,27 @@ To build the documentation, you can use `mdBook`. Follow these steps:
     ```
 
 The documentation will be available at `http://localhost:3000`.
+
+## Compilation Process (Mermaid Diagram)
+
+```mermaid
+graph TD
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:4px
+    style C fill:#fb9,stroke:#333,stroke-width:4px
+    style D fill:#9f9,stroke:#333,stroke-width:4px
+    style E fill:#ffb,stroke:#333,stroke-width:4px
+    style F fill:#f99,stroke:#333,stroke-width:4px
+    style G fill:#bbb,stroke:#333,stroke-width:4px
+
+    subgraph Compilation Process
+        A["<b style='color:black'>Lexer</b><br/><span style='color:black'>Converts source code to tokens</span>"] -->|Token Stream| B["<b style='color:black'>Parser</b><br/><span style='color:black'>Generates Abstract Syntax Tree</span>"]
+        B -->|Abstract Syntax Tree| C["<b style='color:black'>Semantic Analyzer</b><br/><span style='color:black'>Checks types and logic</span>"]
+        C -->|Validated AST| D["<b style='color:black'>Optimizer</b><br/><span style='color:black'>Optimizes and simplifies code</span>"]
+        D -->|Optimized AST| E["<b style='color:black'>Fill WASM Module Data</b><br/><span style='color:black'>Prepares WASM structure</span>"]
+        E -->|WASM Module Structure| F["<b style='color:black'>Write WASM</b><br/><span style='color:black'>Encodes final binary</span>"]
+        F -->|WASM Binary| G["<b style='color:black'>WASM VM</b><br/><span style='color:black'>Executes the binary</span>"]
+    end
+```
+
+If you want more details about the compilation process, please refer to the [Compilation Process](src/compilation_process.md) section.
