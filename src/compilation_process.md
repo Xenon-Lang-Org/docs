@@ -14,9 +14,11 @@ The parser takes the stream of tokens produced by the lexer and constructs an Ab
 
 The semantic analyzer checks the AST for semantic errors, such as type mismatches, undeclared variables, and other logical errors. It ensures that the program adheres to the language's rules.
 
-### 4. Intermediate Representation (IR)
+### 4. Optimizer
 
-The IR is a lower-level representation of the program, which is easier to manipulate for optimization and code generation. The IR is generated from the AST after semantic analysis.
+The optimizer runs pre-computation steps to evaluate constant expressions, unwrap and remove branches of code that are guaranteed to be/will never be executed and perform loop unrolling where applicable.
+
+More details about the optimization steps on the [here](optimizer.md)
 
 ### 5. Fill WASM Module Data
 
