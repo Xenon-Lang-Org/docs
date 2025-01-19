@@ -55,9 +55,9 @@ All commands must be prefixed with `/` to be recognized.
 
 ```mermaid
 graph TD
-    style A fill:#ff99ff,stroke:#333333,stroke-width:4px
-    style B fill:#99bbff,stroke:#333333,stroke-width:4px
-    style C fill:#ffbb99,stroke:#333333,stroke-width:4px
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:4px
+    style C fill:#fb9,stroke:#333,stroke-width:4px
     style D fill:#9f9,stroke:#333,stroke-width:4px
     style E fill:#ffb,stroke:#333,stroke-width:4px
     style F fill:#f99,stroke:#333,stroke-width:4px
