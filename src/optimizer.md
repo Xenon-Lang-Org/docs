@@ -214,7 +214,7 @@ let i: mut i32 = 0;
 let nb: mut i32 = 1;
 
 while (i < 3) {
-    nb = nb * nb;
+    nb = nb * nb + i;
     i = i + 1;
 }
 ```
@@ -229,11 +229,11 @@ while (i < 3) {
 let i: mut i32 = 0;
 let nb: mut i32 = 1;
 
-nb = nb * nb;
+nb = nb * nb + i;
 i = i + 1;
-nb = nb * nb;
+nb = nb * nb + i;
 i = i + 1;
-nb = nb * nb;
+nb = nb * nb + i;
 i = i + 1;
 ```
 
