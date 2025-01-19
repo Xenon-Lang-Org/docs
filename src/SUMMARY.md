@@ -8,6 +8,6 @@
 - [Interpreter](./interpreter.md)
 - [Virtual Machine](./virtual_machine.md)
 - [Tester](./tester.md)
-- [BNF](./xenon.bnf)
+- [BNF](./bnf.md)
 - [Inspirations](./inspirations.md)
 - [Security Features](./security_features.md)
