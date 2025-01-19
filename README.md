@@ -8,6 +8,8 @@ Welcome to the Xenon language documentation repository. This project aims to pro
 - [Comparative Study](src/comparative_study.md)
 - [Syntax](src/syntax.md)
 - [Compilation Process](src/compilation_process.md)
+- [Optimizer](src/optimizer.md)
+- [Interpreter](src/interpreter.md)
 - [BNF](src/xenon.bnf)
 - [Inspirations](src/inspirations.md)
 - [Security Features](src/security_features.md)

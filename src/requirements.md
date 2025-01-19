@@ -2,14 +2,6 @@
 
 This document describes the requirements for the project.
 
-```mermaid
-graph TD;
-A-->B;
-A-->C;
-B-->D;
-C-->D;
-```
-
 ## Software Versions
 
 - GHC: 9.6.6

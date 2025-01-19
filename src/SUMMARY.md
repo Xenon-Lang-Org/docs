@@ -8,3 +8,4 @@
 - [Interpreter](./interpreter.md)
 - [BNF](./xenon.bnf)
 - [Inspirations](./inspirations.md)
+- [Security Features](./security_features.md)
