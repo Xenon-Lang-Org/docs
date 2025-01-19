@@ -1,4 +1,4 @@
-# Single File Test Runner
+# Unit Tester (xtest)
 
 This script provides a mechanism to test a single file containing both source code and inline test definitions. It compiles the source file to WebAssembly, runs the specified tests, and validates the outputs.
 
@@ -130,9 +130,3 @@ Ensure these tools are installed and accessible in your PATH and/or present in t
 - **File Not Found:** Verify the file path and ensure the file exists.
 - **Compilation Errors:** Check the source code for syntax or compatibility issues.
 - **Unexpected Results:** Ensure test definitions match the actual function behavior and output.
-
----
-
-## License
-
-This script is open-source and can be freely modified or distributed under the terms of your chosen license.
