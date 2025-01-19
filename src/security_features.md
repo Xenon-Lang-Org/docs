@@ -38,13 +38,13 @@ The semantic analyzer ensures that all variables are initialized before use, pre
 
 The semantic analyzer checks that all function bodies have valid return statements, ensuring that functions return the expected types.
 
-## Intermediate Representation (IR) and Code Generation
+## Optimizer and Code Generation
 
-The IR and code generation stages ensure that the compiled code is safe and efficient.
+The optimizer and code generation stages ensure that the compiled code is safe and efficient.
 
-### IR Validation
+### Optimizer Validation
 
-The IR is validated to ensure that it adheres to the language's rules and does not contain any undefined behavior.
+The optimizer validates the code to ensure that it adheres to the language's rules and does not contain any undefined behavior.
 
 ### Safe Code Generation
 
