@@ -1,0 +1,363 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tester - Xenon language documentation</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="requirements.html"><strong aria-hidden="true">1.</strong> Requirements</a></li><li class="chapter-item expanded "><a href="comparative_study.html"><strong aria-hidden="true">2.</strong> Comparative Study</a></li><li class="chapter-item expanded "><a href="syntax.html"><strong aria-hidden="true">3.</strong> Syntax</a></li><li class="chapter-item expanded "><a href="compilation_process.html"><strong aria-hidden="true">4.</strong> Compilation Process</a></li><li class="chapter-item expanded "><a href="optimizer.html"><strong aria-hidden="true">5.</strong> Optimizer</a></li><li class="chapter-item expanded "><a href="interpreter.html"><strong aria-hidden="true">6.</strong> Interpreter</a></li><li class="chapter-item expanded "><a href="virtual_machine.html"><strong aria-hidden="true">7.</strong> Virtual Machine</a></li><li class="chapter-item expanded "><a href="tester.html" class="active"><strong aria-hidden="true">8.</strong> Tester</a></li><li class="chapter-item expanded "><a href="bnf.html"><strong aria-hidden="true">9.</strong> BNF</a></li><li class="chapter-item expanded "><a href="inspirations.html"><strong aria-hidden="true">10.</strong> Inspirations</a></li><li class="chapter-item expanded "><a href="security_features.html"><strong aria-hidden="true">11.</strong> Security Features</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Xenon language documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="unit-tester-xtest"><a class="header" href="#unit-tester-xtest">Unit Tester (xtest)</a></h1>
+<p>This script provides a mechanism to test a single file containing both source code and inline test definitions. It compiles the source file to WebAssembly, runs the specified tests, and validates the outputs.</p>
+<hr />
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<ul>
+<li>Parses inline test definitions from the source file.</li>
+<li>Compiles the source file to a WebAssembly (<code>.wasm</code>) file.</li>
+<li>Executes the WebAssembly functions and validates their outputs against the expected results.</li>
+<li>Provides clear color-coded feedback for test results.</li>
+<li>Handles edge cases like floating-point comparisons (e.g., appending <code>.0</code> to outputs).</li>
+</ul>
+<hr />
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>Run the script with the following command:</p>
+<pre><code class="language-bash">./xtest &lt;file&gt;
+</code></pre>
+<h3 id="parameters"><a class="header" href="#parameters">Parameters</a></h3>
+<ul>
+<li><code>&lt;file&gt;</code>: The source file to be tested. This file must exist and contain the expected inline test cases.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-bash">./xtest examples/my_test_file.xn
+</code></pre>
+<hr />
+<h2 id="file-requirements"><a class="header" href="#file-requirements">File Requirements</a></h2>
+<p>The source file must:</p>
+<ol>
+<li>Be in a format compatible with the compiler (<code>xcc</code>) and the interpreter (<code>xin</code>).</li>
+<li>Include test definitions in the following format:</li>
+</ol>
+<pre><code>// TEST "function_name" IN "arguments" OUT "expected_output"
+</code></pre>
+<h3 id="example-test-cases"><a class="header" href="#example-test-cases">Example Test Cases</a></h3>
+<pre><code class="language-c">// TEST "add" IN "2 3" OUT "5"
+// TEST "subtract" IN "10 4" OUT "6"
+</code></pre>
+<p>In this example:</p>
+<ul>
+<li>The <code>add</code> function is expected to return <code>5</code> when invoked with <code>2</code> and <code>3</code>.</li>
+<li>The <code>subtract</code> function is expected to return <code>6</code> when invoked with <code>10</code> and <code>4</code>.</li>
+</ul>
+<hr />
+<h2 id="script-workflow"><a class="header" href="#script-workflow">Script Workflow</a></h2>
+<ol>
+<li>
+<p><strong>Argument Validation:</strong></p>
+<ul>
+<li>Ensures that a single file argument is provided.</li>
+<li>Checks if the specified file exists.</li>
+</ul>
+</li>
+<li>
+<p><strong>Test Case Parsing:</strong></p>
+<ul>
+<li>Scans the file for lines matching the <code>// TEST</code> format.</li>
+<li>Extracts the function name, arguments, and expected output.</li>
+</ul>
+</li>
+<li>
+<p><strong>Compilation:</strong></p>
+<ul>
+<li>Compiles the source file to WebAssembly using <code>xcc</code>.</li>
+<li>Handles compilation errors gracefully.</li>
+</ul>
+</li>
+<li>
+<p><strong>Test Execution:</strong></p>
+<ul>
+<li>Invokes each function defined in the test cases.</li>
+<li>Compares the output with the expected result.</li>
+</ul>
+</li>
+<li>
+<p><strong>Results:</strong></p>
+<ul>
+<li>Displays color-coded results for each test:
+<ul>
+<li>Green ✔ for passed tests.</li>
+<li>Red ✘ for failed tests.</li>
+</ul>
+</li>
+<li>Cleans up the generated <code>.wasm</code> file.</li>
+</ul>
+</li>
+<li>
+<p><strong>Exit Status:</strong></p>
+<ul>
+<li>Exits with <code>0</code> if all tests pass.</li>
+<li>Exits with <code>1</code> if any test fails.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="example-output"><a class="header" href="#example-output">Example Output</a></h2>
+<pre><code class="language-bash">Compiled examples/my_test_file.xn to examples/my_test_file.wasm.
+Running test cases:
+add(2 3) = 5 ✔
+subtract(10 4) = 7 (expected 6) ✘
+Some tests failed.
+</code></pre>
+<hr />
+<h2 id="integration-of-tests-in-a-file"><a class="header" href="#integration-of-tests-in-a-file">Integration of Tests in a File</a></h2>
+<ol>
+<li>
+<p>Write your source code as usual.</p>
+</li>
+<li>
+<p>Add inline test definitions for functions you wish to validate. Use the exact format:</p>
+<pre><code>// TEST "function_name" IN "arg1 arg2 ..." OUT "expected_result"
+</code></pre>
+</li>
+<li>
+<p>Ensure that your functions are accessible and invokable as described in the test cases.</p>
+</li>
+<li>
+<p>Save the file and run the script to validate it.</p>
+</li>
+</ol>
+<hr />
+<h2 id="dependencies"><a class="header" href="#dependencies">Dependencies</a></h2>
+<ul>
+<li><code>xcc</code>: Compiler to convert the source code to WebAssembly.</li>
+<li><code>xrun</code>: Virtual machine to execute the generated WebAssembly files.</li>
+<li><code>xin</code>: Interpreter to run the source code directly.</li>
+<li><code>wasmer</code>: Tool to execute the generated WebAssembly files.</li>
+</ul>
+<p>Ensure these tools are installed and accessible in your PATH and/or present in the same directory as where the script is run.</p>
+<hr />
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<ul>
+<li><strong>File Not Found:</strong> Verify the file path and ensure the file exists.</li>
+<li><strong>Compilation Errors:</strong> Check the source code for syntax or compatibility issues.</li>
+<li><strong>Unexpected Results:</strong> Ensure test definitions match the actual function behavior and output.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="virtual_machine.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="bnf.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="virtual_machine.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="bnf.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid.min.js"></script>
+        <script src="mermaid-init.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Compilation Process - Xenon language documentation</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="requirements.html"><strong aria-hidden="true">1.</strong> Requirements</a></li><li class="chapter-item expanded "><a href="comparative_study.html"><strong aria-hidden="true">2.</strong> Comparative Study</a></li><li class="chapter-item expanded "><a href="syntax.html"><strong aria-hidden="true">3.</strong> Syntax</a></li><li class="chapter-item expanded "><a href="compilation_process.html" class="active"><strong aria-hidden="true">4.</strong> Compilation Process</a></li><li class="chapter-item expanded "><a href="optimizer.html"><strong aria-hidden="true">5.</strong> Optimizer</a></li><li class="chapter-item expanded "><a href="interpreter.html"><strong aria-hidden="true">6.</strong> Interpreter</a></li><li class="chapter-item expanded "><a href="virtual_machine.html"><strong aria-hidden="true">7.</strong> Virtual Machine</a></li><li class="chapter-item expanded "><a href="tester.html"><strong aria-hidden="true">8.</strong> Tester</a></li><li class="chapter-item expanded "><a href="bnf.html"><strong aria-hidden="true">9.</strong> BNF</a></li><li class="chapter-item expanded "><a href="inspirations.html"><strong aria-hidden="true">10.</strong> Inspirations</a></li><li class="chapter-item expanded "><a href="security_features.html"><strong aria-hidden="true">11.</strong> Security Features</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Xenon language documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="compilation-process-documentation"><a class="header" href="#compilation-process-documentation">Compilation Process Documentation</a></h2>
+<p>This document outlines the various stages involved in the compilation process of the Xenon language, from parsing the source code to generating the final WebAssembly (WASM) binary.</p>
+<h3 id="1-lexer"><a class="header" href="#1-lexer">1. Lexer</a></h3>
+<p>The lexer is responsible for converting the raw source code into a stream of tokens. Tokens are the basic building blocks of the language, such as keywords, identifiers, literals, and operators.</p>
+<h3 id="2-parser"><a class="header" href="#2-parser">2. Parser</a></h3>
+<p>The parser takes the stream of tokens produced by the lexer and constructs an Abstract Syntax Tree (AST). The AST represents the hierarchical structure of the source code.</p>
+<h3 id="3-semantic-analyzer"><a class="header" href="#3-semantic-analyzer">3. Semantic Analyzer</a></h3>
+<p>The semantic analyzer checks the AST for semantic errors, such as type mismatches, undeclared variables, and other logical errors. It ensures that the program adheres to the language's rules.</p>
+<h3 id="4-optimizer"><a class="header" href="#4-optimizer">4. Optimizer</a></h3>
+<p>The optimizer runs pre-computation steps to evaluate constant expressions, unwrap and remove branches of code that are guaranteed to be/will never be executed and perform loop unrolling where applicable.</p>
+<p>More details about the optimization steps on the <a href="optimizer.html">here</a></p>
+<h3 id="5-fill-wasm-module-data"><a class="header" href="#5-fill-wasm-module-data">5. Fill WASM Module Data</a></h3>
+<p>The Fill WASM Module Data module is responsible for converting the IR into a WASM module structure. This involves collecting types, functions, globals, and other sections required for the WASM binary.</p>
+<h3 id="6-write-wasm"><a class="header" href="#6-write-wasm">6. Write WASM</a></h3>
+<p>The Write WASM module encodes the WASM module structure into a binary format that can be executed by a WASM runtime. This involves encoding various sections such as types, functions, exports, and code.</p>
+<h2 id="compilation-process-mermaid-diagram"><a class="header" href="#compilation-process-mermaid-diagram">Compilation Process (Mermaid Diagram)</a></h2>
+<pre class="mermaid">graph TD
+    style A fill:#ff99ff,stroke:#333333,stroke-width:4px
+    style B fill:#99bbff,stroke:#333333,stroke-width:4px
+    style C fill:#ffbb99,stroke:#333333,stroke-width:4px
+    style D fill:#9f9,stroke:#333,stroke-width:4px
+    style E fill:#ffb,stroke:#333,stroke-width:4px
+    style F fill:#f99,stroke:#333,stroke-width:4px
+    style G fill:#bbb,stroke:#333,stroke-width:4px
+    style H fill:#c9f,stroke:#333,stroke-width:4px
+    style S fill:#bbb,stroke:#333,stroke-width:4px
+
+    subgraph Compilation Process
+        S[&quot;&lt;b style='color:black'&gt;Source Code&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;.xn source file&lt;/span&gt;&quot;] --&gt;|Source File| A[&quot;&lt;b style='color:black'&gt;Lexer&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Converts source code to tokens&lt;/span&gt;&quot;]
+        A --&gt;|Token Stream| B[&quot;&lt;b style='color:black'&gt;Parser&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Generates Abstract Syntax Tree&lt;/span&gt;&quot;]
+        B --&gt;|Abstract Syntax Tree| H[&quot;&lt;b style='color:black'&gt;Interpreter&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Interprete xenon code&lt;/span&gt;&quot;]
+        B --&gt;|Abstract Syntax Tree| C[&quot;&lt;b style='color:black'&gt;Semantic Analyzer&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Checks types and logic&lt;/span&gt;&quot;]
+        C --&gt;|Validated AST| D[&quot;&lt;b style='color:black'&gt;Optimizer&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Optimizes and simplifies code&lt;/span&gt;&quot;]
+        D --&gt;|Optimized AST| E[&quot;&lt;b style='color:black'&gt;Fill WASM Module Data&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Prepares WASM structure&lt;/span&gt;&quot;]
+        E --&gt;|WASM Module Structure| F[&quot;&lt;b style='color:black'&gt;Write WASM&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Encodes final binary&lt;/span&gt;&quot;]
+        F --&gt;|WASM Binary| G[&quot;&lt;b style='color:black'&gt;WASM VM&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Executes the binary&lt;/span&gt;&quot;]
+    end
+</pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="syntax.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="optimizer.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="syntax.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="optimizer.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid.min.js"></script>
+        <script src="mermaid-init.js"></script>
+
+
+    </div>
+    </body>
+</html>

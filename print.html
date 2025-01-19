@@ -1,0 +1,1152 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Xenon language documentation</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="requirements.html"><strong aria-hidden="true">1.</strong> Requirements</a></li><li class="chapter-item expanded "><a href="comparative_study.html"><strong aria-hidden="true">2.</strong> Comparative Study</a></li><li class="chapter-item expanded "><a href="syntax.html"><strong aria-hidden="true">3.</strong> Syntax</a></li><li class="chapter-item expanded "><a href="compilation_process.html"><strong aria-hidden="true">4.</strong> Compilation Process</a></li><li class="chapter-item expanded "><a href="optimizer.html"><strong aria-hidden="true">5.</strong> Optimizer</a></li><li class="chapter-item expanded "><a href="interpreter.html"><strong aria-hidden="true">6.</strong> Interpreter</a></li><li class="chapter-item expanded "><a href="virtual_machine.html"><strong aria-hidden="true">7.</strong> Virtual Machine</a></li><li class="chapter-item expanded "><a href="tester.html"><strong aria-hidden="true">8.</strong> Tester</a></li><li class="chapter-item expanded "><a href="bnf.html"><strong aria-hidden="true">9.</strong> BNF</a></li><li class="chapter-item expanded "><a href="inspirations.html"><strong aria-hidden="true">10.</strong> Inspirations</a></li><li class="chapter-item expanded "><a href="security_features.html"><strong aria-hidden="true">11.</strong> Security Features</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Xenon language documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="requirements"><a class="header" href="#requirements">Requirements</a></h1>
+<p>This document describes the requirements for the project.</p>
+<h2 id="software-versions"><a class="header" href="#software-versions">Software Versions</a></h2>
+<ul>
+<li>GHC: 9.6.6</li>
+<li>HLS: 2.9.0.1</li>
+<li>Cabal: 3.10.3.0</li>
+<li>Stack: 3.1.1</li>
+</ul>
+<h2 id="table-of-contents---system-requirements"><a class="header" href="#table-of-contents---system-requirements">Table of Contents - System Requirements</a></h2>
+<ul>
+<li>Linux
+<ul>
+<li><a href="requirements.html#linux-debian">Debian</a></li>
+<li><a href="requirements.html#linux-ubuntu">Ubuntu</a></li>
+<li><a href="requirements.html#linux-fedora">Fedora</a></li>
+<li><a href="requirements.html#linux-centos">CentOS</a></li>
+<li><a href="requirements.html#linux-alpine">Alpine</a></li>
+<li><a href="requirements.html#linux-generic">(generic)</a></li>
+</ul>
+</li>
+<li><a href="requirements.html#freebsd">FreeBSD</a></li>
+<li><a href="requirements.html#windows">Windows</a></li>
+</ul>
+<h2 id="linux-debian"><a class="header" href="#linux-debian">Linux Debian</a></h2>
+<p>The following distro packages are required:
+<code>build-essential curl libffi-dev libffi6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5</code>
+Version &gt;= 11 &amp;&amp; &lt;= 12</p>
+<p>The following distro packages are required: <code>build-essential curl libffi-dev libffi7 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5</code>
+Version &gt;= 12</p>
+<p>The following distro packages are required: <code>build-essential curl libffi-dev libffi8 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5</code></p>
+<h2 id="linux-ubuntu"><a class="header" href="#linux-ubuntu">Linux Ubuntu</a></h2>
+<p>The following distro packages are required: <code>build-essential curl libffi-dev libffi6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5</code>
+Version &gt;= 20.04 &amp;&amp; &lt; 20.10</p>
+<p>The following distro packages are required: <code>build-essential curl libffi-dev libffi7 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5</code>
+Version &gt;= 20.10 &amp;&amp; &lt; 23</p>
+<p>The following distro packages are required: <code>build-essential curl libffi-dev libffi8ubuntu1 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5</code>
+Version &gt;= 23</p>
+<p>The following distro packages are required: <code>build-essential curl libffi-dev libffi8ubuntu1 libgmp-dev libgmp10 libncurses-dev</code></p>
+<h2 id="linux-fedora"><a class="header" href="#linux-fedora">Linux Fedora</a></h2>
+<p>The following distro packages are required: <code>gcc gcc-c++ gmp gmp-devel make ncurses ncurses-compat-libs xz perl</code></p>
+<h2 id="linux-centos"><a class="header" href="#linux-centos">Linux CentOS</a></h2>
+<p>The following distro packages are required: <code>gcc gcc-c++ gmp gmp-devel make ncurses ncurses-compat-libs xz perl</code>
+Version &gt;= 7 &amp;&amp; &lt; 8</p>
+<p>The following distro packages are required: <code>gcc gcc-c++ gmp gmp-devel make ncurses xz perl</code></p>
+<h2 id="linux-alpine"><a class="header" href="#linux-alpine">Linux Alpine</a></h2>
+<p>The following distro packages are required: <code>binutils-gold curl gcc g++ gmp-dev libc-dev libffi-dev make musl-dev ncurses-dev perl tar xz</code></p>
+<h2 id="linux-generic"><a class="header" href="#linux-generic">Linux (generic)</a></h2>
+<p>You need the following packages: <code>curl g++ gcc gmp make ncurses realpath xz-utils</code>. Consult your distro documentation on the exact names of those packages.</p>
+<h2 id="freebsd"><a class="header" href="#freebsd">FreeBSD</a></h2>
+<p>The following distro packages are required: <code>curl gcc gmp gmake ncurses perl5 libffi libiconv</code></p>
+<h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
+<p>On Windows, <code>msys2</code> should already have been set up during the installation, so most users should just proceed. If you are installing manually, make sure to have a working mingw64 toolchain and shell.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="comparative-study---glados-project"><a class="header" href="#comparative-study---glados-project">Comparative Study - Glados Project</a></h1>
+<p>This study evaluates the decisions made for the <strong>Glados Project</strong>, where we aim to design and implement a custom imperative programming language using <strong>Haskell</strong>. This language will be compiled into <strong>WebAssembly</strong> (Wasm) for efficient execution. The study explores the reasons for selecting <strong>Haskell</strong>, the imperative programming paradigm, and WebAssembly as the compilation target. We also compare tools, approaches, and technologies in parsing, runtime, and language design, emphasizing performance, scalability, and maintainability.</p>
+<hr />
+<h2 id="1-programming-language-for-development-haskell"><a class="header" href="#1-programming-language-for-development-haskell">1. <strong>Programming Language for Development: Haskell</strong></a></h2>
+<h3 id="relevance-and-justification"><a class="header" href="#relevance-and-justification">Relevance and Justification</a></h3>
+<p>Haskell was chosen as the development language due to its powerful capabilities for constructing <strong>parsers</strong>, <strong>interpreters</strong>, and <strong>compilers</strong>. Its functional nature and abstractions enable the development of highly modular and maintainable codebases.</p>
+<ul>
+<li>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li>Strong support for <strong>parsing libraries</strong> like <strong>Parsec</strong> and <strong>Megaparsec</strong>, simplifying grammar and syntax design.</li>
+<li>Immutability and <strong>pure functional programming</strong> paradigms facilitate reasoning about program correctness.</li>
+<li>Rich type system and <strong>algebraic data types</strong> (ADTs) enable safe and clear representation of language constructs.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Steep learning curve for developers unfamiliar with functional programming.</li>
+<li>Runtime performance of Haskell programs might lag behind C++ for specific tasks; however, its suitability for compilation pipeline development outweighs this limitation.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Comparative Study</strong>:</p>
+<ul>
+<li><strong>Rust</strong>: While offering excellent performance and memory safety, Rust's low-level nature can make the development of parsers and compilers less expressive compared to Haskell.</li>
+<li><strong>Python</strong>: Easy to use for prototyping compilers but lacks the performance and static type-checking needed for complex language implementations.</li>
+</ul>
+<hr />
+<h2 id="2-programming-paradigm-imperative"><a class="header" href="#2-programming-paradigm-imperative">2. <strong>Programming Paradigm: Imperative</strong></a></h2>
+<h3 id="relevance-and-justification-1"><a class="header" href="#relevance-and-justification-1">Relevance and Justification</a></h3>
+<p>While Haskell is a functional language, we have chosen to design <strong>Glados</strong> as an <strong>imperative programming language</strong>, reflecting the needs of developers accustomed to control-flow structures and mutable state.</p>
+<ul>
+<li>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li>Familiarity for most developers due to the prevalence of imperative languages like <strong>C</strong>, <strong>Java</strong>, and <strong>Python</strong>.</li>
+<li>Straightforward translation into <strong>WebAssembly</strong>, which is inherently imperative.</li>
+<li>Simplifies implementation of state-based computations and control-flow mechanisms like loops and conditionals.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Imperative languages require careful management of mutable state, which may introduce bugs like race conditions or unexpected side effects.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Comparative Study</strong>:</p>
+<ul>
+<li><strong>Functional Languages</strong>: While offering declarative programming benefits, functional languages introduce a steeper learning curve for imperative-oriented developers.</li>
+<li><strong>Object-Oriented Languages</strong>: Overhead introduced by class hierarchies and object management is unnecessary for the lightweight, performance-oriented design of Glados.</li>
+</ul>
+<hr />
+<h2 id="3-compilation-target-webassembly-wasm"><a class="header" href="#3-compilation-target-webassembly-wasm">3. <strong>Compilation Target: WebAssembly (Wasm)</strong></a></h2>
+<h3 id="relevance-and-justification-2"><a class="header" href="#relevance-and-justification-2">Relevance and Justification</a></h3>
+<p>WebAssembly was selected as the compilation target due to its cross-platform compatibility, lightweight binary format, and growing adoption for high-performance web and server-side applications.</p>
+<ul>
+<li>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li><strong>Performance</strong>: WebAssembly offers near-native execution speed, making it ideal for computationally intensive programs.</li>
+<li><strong>Portability</strong>: Wasm can be executed in web browsers and standalone runtimes, enhancing deployment flexibility.</li>
+<li><strong>Security</strong>: Sandboxed execution model prevents unauthorized access to the host environment.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Limited debugging tools compared to traditional binaries.</li>
+<li>Learning curve for developers new to Wasm bytecode.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Comparative Study</strong>:</p>
+<ul>
+<li><strong>LLVM IR</strong>: Offers high-performance backend support and optimizations but lacks the portability and security guarantees of WebAssembly.</li>
+<li><strong>JavaScript</strong>: While highly portable, its performance and scalability fall short for resource-intensive applications.</li>
+</ul>
+<hr />
+<h2 id="4-parsing-approach"><a class="header" href="#4-parsing-approach">4. <strong>Parsing Approach</strong></a></h2>
+<h3 id="relevance-and-justification-3"><a class="header" href="#relevance-and-justification-3">Relevance and Justification</a></h3>
+<p>Efficient parsing is critical to language design. For <strong>Glados</strong>, we are using <strong>Megaparsec</strong>, a Haskell library for constructing parsers.</p>
+<ul>
+<li>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li>Combines <strong>composability</strong> and <strong>expressiveness</strong> with strong error reporting.</li>
+<li>Haskell’s <strong>monadic parsing</strong> simplifies handling complex grammar.</li>
+<li>Modular design allows easy addition or modification of language constructs.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Parsing performance might not match low-level tools like <strong>ANTLR</strong>, but the trade-off is acceptable given Haskell’s strengths in parser design.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Comparative Study</strong>:</p>
+<ul>
+<li><strong>ANTLR</strong>: While high-performing and widely used, its Java-centric ecosystem can be less intuitive for Haskell developers.</li>
+<li><strong>Flex/Bison</strong>: Suitable for low-level parser generation but lacks the abstraction and readability of Haskell-based solutions.</li>
+</ul>
+<hr />
+<h2 id="5-runtime-architecture"><a class="header" href="#5-runtime-architecture">5. <strong>Runtime Architecture</strong></a></h2>
+<h3 id="relevance-and-justification-4"><a class="header" href="#relevance-and-justification-4">Relevance and Justification</a></h3>
+<p>The Glados runtime is designed to operate within a <strong>WebAssembly-compatible virtual machine</strong> for portability and performance.</p>
+<ul>
+<li>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li><strong>Lightweight</strong>: Wasm binaries are optimized for fast startup and low resource usage.</li>
+<li><strong>Cross-platform</strong>: Ensures compatibility across web, mobile, and server environments.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Developing custom runtime features (e.g., garbage collection) requires additional effort.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Comparative Study</strong>:</p>
+<ul>
+<li><strong>Custom Virtual Machine</strong>: Provides more control but introduces significant development overhead compared to Wasm-based solutions.</li>
+<li><strong>Native Executables</strong>: Lack the portability and sandboxing advantages of Wasm.</li>
+</ul>
+<hr />
+<h2 id="6-development-tools"><a class="header" href="#6-development-tools">6. <strong>Development Tools</strong></a></h2>
+<h3 id="relevance-and-justification-5"><a class="header" href="#relevance-and-justification-5">Relevance and Justification</a></h3>
+<p>For development, we chose tools that complement Haskell's ecosystem and facilitate collaboration, testing, and documentation.</p>
+<ul>
+<li><strong>GitHub</strong>: Version control and CI/CD integration.</li>
+<li><strong>Stack</strong>: Simplifies dependency management and builds in Haskell.</li>
+<li><strong>Visual Studio Code</strong>: Primary editor, enhanced with Haskell plugins.</li>
+</ul>
+<p><strong>Comparative Study</strong>:</p>
+<ul>
+<li><strong>GitLab</strong>: Similar to GitHub but less widely adopted for open-source Haskell projects.</li>
+<li><strong>Cabal</strong>: Provides flexibility but lacks the simplicity and automation of Stack.</li>
+</ul>
+<hr />
+<h2 id="7-documentation"><a class="header" href="#7-documentation">7. <strong>Documentation</strong></a></h2>
+<h3 id="relevance-and-justification-6"><a class="header" href="#relevance-and-justification-6">Relevance and Justification</a></h3>
+<p>We prioritize interactive, markdown-based documentation to ensure clarity and maintainability. <strong>mdBook</strong> was chosen for its seamless integration with modern development workflows.</p>
+<p><strong>Comparative Study</strong>:</p>
+<ul>
+<li><strong>Sphinx</strong>: Offers advanced documentation features but has a steeper learning curve.</li>
+<li><strong>Doxygen</strong>: Excellent for API documentation but less effective for general-purpose guides.</li>
+</ul>
+<hr />
+<h2 id="8-testing-strategy-stack-with-unit-tests"><a class="header" href="#8-testing-strategy-stack-with-unit-tests">8. <strong>Testing Strategy: Stack with Unit Tests</strong></a></h2>
+<h3 id="relevance-and-justification-7"><a class="header" href="#relevance-and-justification-7">Relevance and Justification</a></h3>
+<p>Testing is a cornerstone of ensuring the correctness, stability, and maintainability of the Glados programming language. We have chosen <strong>Stack</strong>, a Haskell build tool, to manage our testing framework. Stack integrates seamlessly with Haskell's ecosystem and supports automated <strong>unit testing</strong>.</p>
+<ul>
+<li>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li><strong>Integration with Stack</strong>: Simplifies test suite setup and execution.</li>
+<li><strong>Automation</strong>: Enables continuous integration pipelines with GitHub Actions, ensuring code changes do not introduce regressions.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Writing comprehensive test cases can be time-consuming, particularly for complex grammar and edge cases in the language design.</li>
+</ul>
+</li>
+</ul>
+<h3 id="testing-methodology"><a class="header" href="#testing-methodology">Testing Methodology</a></h3>
+<ol>
+<li>
+<p><strong>Unit Tests</strong>:</p>
+<ul>
+<li>Focus on testing individual components like the parser, AST transformations, and WebAssembly generation.</li>
+<li>Example: Ensuring that specific syntactic constructs are correctly parsed into the corresponding AST nodes.</li>
+</ul>
+</li>
+<li>
+<p><strong>End-to-End Tests</strong>:</p>
+<ul>
+<li>Verify that complete programs written in Glados compile correctly to WebAssembly and execute as intended.</li>
+<li>Example: A Glados program performing arithmetic should produce the correct output in a WebAssembly runtime.</li>
+</ul>
+</li>
+<li>
+<p><strong>Property-Based Testing</strong>:</p>
+<ul>
+<li>Tools like <strong>QuickCheck</strong> are used to test properties of language constructs.</li>
+<li>Example: Testing that the order of arithmetic operations respects operator precedence.</li>
+</ul>
+</li>
+</ol>
+<h3 id="comparative-study"><a class="header" href="#comparative-study">Comparative Study</a></h3>
+<ul>
+<li>
+<p><strong>Stack</strong>:</p>
+<ul>
+<li>Provides native integration with Haskell’s testing libraries.</li>
+<li>Streamlines dependency management for test-specific modules.</li>
+<li>Automatically integrates with CI/CD pipelines.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cabal</strong>: Offers similar functionality but lacks the simplicity and automation of Stack, making it less suitable for rapid development and testing workflows.</p>
+</li>
+<li>
+<p><strong>External Testing Frameworks</strong>: While tools like <strong>Pytest</strong> or <strong>JUnit</strong> are effective for their respective ecosystems, they are not applicable in a Haskell-based project.</p>
+</li>
+</ul>
+<hr />
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>The <strong>Glados Project</strong> leverages <strong>Haskell</strong> for its robust parsing capabilities, develops an imperative language to cater to developer familiarity, and compiles to <strong>WebAssembly</strong> for portability and performance. This approach ensures that the language is both developer-friendly and technically optimized for modern environments. The choices, supported by comparative analysis, provide a strong foundation for a scalable and maintainable language implementation.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="keywords"><a class="header" href="#keywords">Keywords</a></h1>
+<h1 id="types"><a class="header" href="#types">Types</a></h1>
+<ul>
+<li>Signed Integer: <code>i32</code>, <code>i64</code></li>
+<li>Unsigned Integer: <code>u8</code>, <code>u16</code>, <code>u32</code>, <code>u64</code> -- Not implemented yet</li>
+<li>Floating point: <code>f32</code>, <code>f64</code></li>
+<li>Structure: <code>{ }</code> -- Not implemented yet</li>
+<li>Array: <code>[ ]</code> -- Not implemented yet</li>
+<li>Enum: <code>&lt; &gt;</code> -- Not implemented yet</li>
+</ul>
+<h1 id="syntax"><a class="header" href="#syntax">Syntax</a></h1>
+<ul>
+<li>Variable: <code>let</code></li>
+<li>Typing: <code>:</code>, <code>-&gt;</code></li>
+<li>Conditions: <code>if</code> <code>elif</code> <code>else</code></li>
+<li>Loops: <code>while</code></li>
+<li>Qualifiers: <code>mut</code>, <code>*</code></li>
+<li>Functions: <code>fn</code></li>
+<li>Dereference: <code>@</code></li>
+<li>Reference: <code>&amp;</code></li>
+<li>Type Definition: <code>type</code></li>
+</ul>
+<h1 id="exemples"><a class="header" href="#exemples">Exemples</a></h1>
+<h2 id="variables"><a class="header" href="#variables">Variables</a></h2>
+<p>To declare a variable, use the <code>let</code> keyword followed by the variable name, a type, and a value. Typing variables is done using <code>:</code> and a combination of type, type qualifier, and pointer declaration.</p>
+<pre><code class="language-xn">let a: i32 = 42;
+</code></pre>
+<p>All variables are const by default. You'll need to explicitly declare it as mutable with the <code>mut</code> qualifier.</p>
+<pre><code class="language-xn">let a: i32 = 42; // const i32
+let b: mut i32 = 42; // mutable i32
+</code></pre>
+<p>This also applies to pointers:</p>
+<pre><code class="language-xn">let ptr1: *i32 = 42; // pointer to const i32
+let ptr2: *mut i32 = 42; // pointer to mutable i32
+</code></pre>
+<h2 id="pointers-work-in-progress"><a class="header" href="#pointers-work-in-progress">Pointers (Work in progress)</a></h2>
+<p>The syntax for pointers in xenon is similar to C, with one important difference, <strong>Dereferencing pointers is done with <code>@</code></strong></p>
+<pre><code class="language-xn">let a: i32 = 42; // const i32
+let ptr: *i32 = &amp;a; // pointer to a
+let b: i32 = @ptr; // b = 42
+</code></pre>
+<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<p>Functions are declared with the <code>fn</code> keyword, followed by the function name, arguments, and return type, defined by <code>-&gt;</code>.</p>
+<pre><code class="language-xn">fn add(a: i32, b: i32) -&gt; i32
+{
+    return a + b;
+}
+</code></pre>
+<h2 id="loops"><a class="header" href="#loops">Loops</a></h2>
+<p>Loops in xenon are limited to while loops.</p>
+<pre><code class="language-xn">let i: mut i32 = 0;
+
+while (i &lt; 10) {
+    i += 1;
+}
+</code></pre>
+<h2 id="conditionals"><a class="header" href="#conditionals">Conditionals</a></h2>
+<p>Conditionnals follow similar patterns than other languages, using if, elif and else keywords.</p>
+<pre><code class="language-xn">let a: i32 = 42;
+
+if (a == 42) {
+    // do something
+} elif (a == 43) {
+    // do something else
+} else {
+    // do something else
+}
+</code></pre>
+<h2 id="structs-work-in-progress"><a class="header" href="#structs-work-in-progress">Structs (Work in progress)</a></h2>
+<p>You can define structs by using brackets and the 'type' keyword, which is used to define a new type like a struct or an enum.</p>
+<pre><code class="language-xn">type Point = {
+    x: i32,
+    y: i32
+};
+
+let p: Point = {1, 2};
+</code></pre>
+<p>Declaring an unammed struct is also possible.</p>
+<pre><code class="language-xn">let p: {x: i32, y: i32} = {1, 2};
+</code></pre>
+<p>As well as accessing struct members like you would with an array.</p>
+<pre><code class="language-xn">let p: {x: i32, y: i32} = {1, 2};
+let x: i32 = p[0]; // x = 1
+let y: i32 = p[1]; // y = 2
+</code></pre>
+<h2 id="arrays-work-in-progress"><a class="header" href="#arrays-work-in-progress">Arrays (Work in progress)</a></h2>
+<p>Arrays are declared with the <code>[size: type]</code> syntax.</p>
+<pre><code class="language-xn">let arr: [10: i32] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+</code></pre>
+<p>Two-dimensional arrays (and more) are also possible.</p>
+<pre><code class="language-xn">let tab: [2: [2: i32]] = [[0, 1], [2, 3]];
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="compilation-process-documentation"><a class="header" href="#compilation-process-documentation">Compilation Process Documentation</a></h2>
+<p>This document outlines the various stages involved in the compilation process of the Xenon language, from parsing the source code to generating the final WebAssembly (WASM) binary.</p>
+<h3 id="1-lexer"><a class="header" href="#1-lexer">1. Lexer</a></h3>
+<p>The lexer is responsible for converting the raw source code into a stream of tokens. Tokens are the basic building blocks of the language, such as keywords, identifiers, literals, and operators.</p>
+<h3 id="2-parser"><a class="header" href="#2-parser">2. Parser</a></h3>
+<p>The parser takes the stream of tokens produced by the lexer and constructs an Abstract Syntax Tree (AST). The AST represents the hierarchical structure of the source code.</p>
+<h3 id="3-semantic-analyzer"><a class="header" href="#3-semantic-analyzer">3. Semantic Analyzer</a></h3>
+<p>The semantic analyzer checks the AST for semantic errors, such as type mismatches, undeclared variables, and other logical errors. It ensures that the program adheres to the language's rules.</p>
+<h3 id="4-optimizer"><a class="header" href="#4-optimizer">4. Optimizer</a></h3>
+<p>The optimizer runs pre-computation steps to evaluate constant expressions, unwrap and remove branches of code that are guaranteed to be/will never be executed and perform loop unrolling where applicable.</p>
+<p>More details about the optimization steps on the <a href="optimizer.html">here</a></p>
+<h3 id="5-fill-wasm-module-data"><a class="header" href="#5-fill-wasm-module-data">5. Fill WASM Module Data</a></h3>
+<p>The Fill WASM Module Data module is responsible for converting the IR into a WASM module structure. This involves collecting types, functions, globals, and other sections required for the WASM binary.</p>
+<h3 id="6-write-wasm"><a class="header" href="#6-write-wasm">6. Write WASM</a></h3>
+<p>The Write WASM module encodes the WASM module structure into a binary format that can be executed by a WASM runtime. This involves encoding various sections such as types, functions, exports, and code.</p>
+<h2 id="compilation-process-mermaid-diagram"><a class="header" href="#compilation-process-mermaid-diagram">Compilation Process (Mermaid Diagram)</a></h2>
+<pre class="mermaid">graph TD
+    style A fill:#ff99ff,stroke:#333333,stroke-width:4px
+    style B fill:#99bbff,stroke:#333333,stroke-width:4px
+    style C fill:#ffbb99,stroke:#333333,stroke-width:4px
+    style D fill:#9f9,stroke:#333,stroke-width:4px
+    style E fill:#ffb,stroke:#333,stroke-width:4px
+    style F fill:#f99,stroke:#333,stroke-width:4px
+    style G fill:#bbb,stroke:#333,stroke-width:4px
+    style H fill:#c9f,stroke:#333,stroke-width:4px
+    style S fill:#bbb,stroke:#333,stroke-width:4px
+
+    subgraph Compilation Process
+        S[&quot;&lt;b style='color:black'&gt;Source Code&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;.xn source file&lt;/span&gt;&quot;] --&gt;|Source File| A[&quot;&lt;b style='color:black'&gt;Lexer&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Converts source code to tokens&lt;/span&gt;&quot;]
+        A --&gt;|Token Stream| B[&quot;&lt;b style='color:black'&gt;Parser&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Generates Abstract Syntax Tree&lt;/span&gt;&quot;]
+        B --&gt;|Abstract Syntax Tree| H[&quot;&lt;b style='color:black'&gt;Interpreter&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Interprete xenon code&lt;/span&gt;&quot;]
+        B --&gt;|Abstract Syntax Tree| C[&quot;&lt;b style='color:black'&gt;Semantic Analyzer&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Checks types and logic&lt;/span&gt;&quot;]
+        C --&gt;|Validated AST| D[&quot;&lt;b style='color:black'&gt;Optimizer&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Optimizes and simplifies code&lt;/span&gt;&quot;]
+        D --&gt;|Optimized AST| E[&quot;&lt;b style='color:black'&gt;Fill WASM Module Data&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Prepares WASM structure&lt;/span&gt;&quot;]
+        E --&gt;|WASM Module Structure| F[&quot;&lt;b style='color:black'&gt;Write WASM&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Encodes final binary&lt;/span&gt;&quot;]
+        F --&gt;|WASM Binary| G[&quot;&lt;b style='color:black'&gt;WASM VM&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Executes the binary&lt;/span&gt;&quot;]
+    end
+</pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="optimizer"><a class="header" href="#optimizer">Optimizer</a></h1>
+<p>Using the <a href="./interpreter.html">Interpreter</a>'s tool set, the optimizer is able to modify the code structure by using multiple compiler optimization methods.</p>
+<h3 id="constant-folding"><a class="header" href="#constant-folding">Constant Folding</a></h3>
+<p>By keeping track of defined constant variables, references to them are substituted with their actual value.</p>
+<div style="display: flex; gap: 16px; align-items: center">
+<div style="flex: 1;">
+<pre><code class="language-xn">let x: i32 = 12;
+return x;
+</code></pre>
+</div>
+<p><strong>Becomes</strong></p>
+<div style="flex: 1;">
+<pre><code class="language-xn">return 12;
+</code></pre>
+</div>
+</div>
+<p>This also works for binary operation that uses literal and/or constants.</p>
+<div style="display: flex; gap: 16px; align-items: center">
+<div style="flex: 1;">
+<pre><code class="language-xn">let x: i32 = 10 + 5;
+return x * 2;
+</code></pre>
+</div>
+<p><strong>Becomes</strong></p>
+<div style="flex: 1;">
+<pre><code class="language-xn">return 30;
+</code></pre>
+</div>
+</div>
+<h3 id="conditional-unwrapping"><a class="header" href="#conditional-unwrapping">Conditional Unwrapping</a></h3>
+<p>Using constant folding, Conditional branches that have constant value are pre-computed, the resulting body (if/else) is then inserted at its place. The other body is discarded.</p>
+<div style="display: flex; gap: 16px; align-items: center">
+<div style="flex: 1;">
+<pre><code class="language-xn">let foo: mut f32 = 1.7;
+let x: i32 = 1;
+
+if (x) {
+    foo = 12.2;
+} else {
+    foo = 4.6;
+}
+</code></pre>
+</div>
+<p><strong>Becomes</strong></p>
+<div style="flex: 1;">
+<pre><code class="language-xn">let foo: mut f32 = 1.7;
+foo = 12.2;
+</code></pre>
+</div>
+</div>
+<h3 id="returning-branch-unpacking"><a class="header" href="#returning-branch-unpacking">Returning Branch Unpacking</a></h3>
+<p>When entering an <strong>If</strong> statement that is guaranteed to return, its else branch (if any) is unpacked to the main body since the rest of the body will never be executed if the main branch of the <strong>If</strong> is entered.</p>
+<div style="display: flex; gap: 16px; align-items: center">
+<div style="flex: 1;">
+<pre><code class="language-xn">if (foo == bar) {
+    foo = 20;
+    return 1;
+} else {
+    foo = 13;
+}
+bar = 20;
+return 0;
+</code></pre>
+</div>
+<p><strong>Becomes</strong></p>
+<div style="flex: 1;">
+<pre><code class="language-xn">if (foo == bar) {
+    foo = 20;
+    return 1;
+}
+foo = 13;
+bar = 20;
+return 0;
+</code></pre>
+</div>
+</div>
+<h3 id="dead-code-elimination"><a class="header" href="#dead-code-elimination">Dead Code Elimination</a></h3>
+<p>Code that succeed a return statement is discarded as it will never be executed. This pairs well with returning branch unpacking as it can lead to mutiple return statements on the same branch.</p>
+<div style="display: flex; gap: 16px; align-items: center">
+<div style="flex: 1;">
+<pre><code class="language-xn">bar = 10;
+return 0;
+let foo: mut i32 = 4;
+while (foo &gt; 0) {
+    bar = bar * 2;
+}
+</code></pre>
+</div>
+<p><strong>Becomes</strong></p>
+<div style="flex: 1;">
+<pre><code class="language-xn">bar = 10;
+return 0;
+</code></pre>
+</div>
+</div>
+<h3 id="function-inlining"><a class="header" href="#function-inlining">Function Inlining</a></h3>
+<p>Functions that do simple operations (including those that are optimized as such) are inlined when used as expressions. The function definition itself is not discarded.</p>
+<div style="display: flex; gap: 16px; align-items: center">
+<div style="flex: 1;">
+<pre><code class="language-xn">fn compute(a: i32, b: i32) -&gt; i32
+{
+    let c: i32 = 12;
+    return a * b * c;
+}
+
+let x: mut i32 = compute(10, 2);
+</code></pre>
+</div>
+<p><strong>Becomes</strong></p>
+<div style="flex: 1;">
+<pre><code class="language-xn">fn compute(a: i32, b: i32) -&gt; i32
+{
+    return a * b * 12;
+}
+
+let x: mut i32 = 240;
+</code></pre>
+</div>
+</div>
+<h3 id="loop-unrolling"><a class="header" href="#loop-unrolling">Loop Unrolling</a></h3>
+<p>Some while loops can have their content unrolled into the main branch when specific conditions are met:</p>
+<ul>
+<li>The condition of the while loop is constant expect a single mutable variable (named the <strong>loop variable</strong>)</li>
+<li>The body of the loop modifies the loop variable in a constant way (i.e. <code>i = i + 1</code> or <code>i = compute(i, 13)</code> assuming <code>compute</code> is an inlineable function)</li>
+<li>The while in finite and has at most 16 loops</li>
+</ul>
+<div style="display: flex; gap: 16px; align-items: center">
+<div style="flex: 1;">
+<pre><code class="language-xn">let i: mut i32 = 0;
+let nb: mut i32 = 1;
+
+while (i &lt; 3) {
+    nb = nb * nb + i;
+    i = i + 1;
+}
+</code></pre>
+</div>
+<p><strong>Becomes</strong></p>
+<div style="flex: 1;">
+<pre><code class="language-xn">let i: mut i32 = 0;
+let nb: mut i32 = 1;
+
+nb = nb * nb + i;
+i = i + 1;
+nb = nb * nb + i;
+i = i + 1;
+nb = nb * nb + i;
+i = i + 1;
+</code></pre>
+</div>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="interpreter"><a class="header" href="#interpreter">Interpreter</a></h1>
+<p>The Xenon Interpreter allows you to run Xenon code without the need to compile it beforehand.  Whether or not you should compile or interpret your code depends on your specific needs:</p>
+<p><strong>Compiled</strong></p>
+<ul>
+<li><strong>Execution speed</strong>: Running compiled code is generally faster as there isn't the overhead that comes with interpreting code.</li>
+<li><strong>Program encapsulation</strong>: If your program is specifically made to execute a single task, it may be more appropriate to compile your code.</li>
+</ul>
+<p><strong>Interpreted</strong></p>
+<ul>
+<li><strong>Quick Usage</strong>: Using an interpreter is quite useful when you need to execute some small code with varying input on the fly.</li>
+<li><strong>Control</strong>: Interpreters usually offer some additional features that allow you interact with your program in a way you cannot with compiled code. The Xenon Interpreter offers those features in the form of <a href="interpreter.html#Commands">Commands</a>.</li>
+</ul>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>If not already done, you'll need to clone the <a href="https://github.com/Xenon-Lang-Org/Xenon">Xenon repository</a> and build the interpreter (<code>xin</code>).</p>
+<p>Then, simply run the program:</p>
+<pre><code class="language-sh">./xin
+</code></pre>
+<p>To run a single file without starting the command line interface, use the <code>-e</code> flag. Note that this execution mode will print the output of functions onto the terminal.</p>
+<pre><code class="language-sh">./xin -e main.xn
+</code></pre>
+<p>You can also pre-load Xenon files while launching it:</p>
+<pre><code class="language-sh">./xin foo.xn bar.xn
+</code></pre>
+<p>You'll then be put into a command line interface where can write the code. It supports standard CLI input features such as line editing and command history. When writing a single statement, you do not have to terminate it by a semicolon.</p>
+<pre><code>Xenon Interpreter x.x.x
+Type '/help' for a list of commands.
+&gt;&gt; [YOUR COMMAND]
+</code></pre>
+<p><strong>Note</strong>: The interpreter does not support redirecting multiple lines of code into it when running it (i.e. <code>./xin &lt; foo.xn</code>). If you need to declare a complex multi-line construct like a function that cannot be written in a single line, you can write it into a file and load it into the interpreter.</p>
+<h2 id="commands"><a class="header" href="#commands">Commands</a></h2>
+<p>When in the CLI, you can enter special commands to interact with the live execution.
+All commands must be prefixed with <code>/</code> to be recognized.</p>
+<ul>
+<li><code>env</code>: Lookup data from the virtual environment (variables, functions and custom types), using it without any argument will dump the entire environment. Adding any number of argument will only show the ones that match them.</li>
+<li><code>load</code>: Load xenon files into the virtual environment. Each given argument must be a path to a valid xenon file. If not arguments are given, this command is a no op. Loading a Xenon file into the interpreter will import all of its variables, functions and custom types (<strong>Note</strong>: this will also execute all standalone statments like function calls and variable reassignments)</li>
+<li><code>exit</code>: Exit the interpreter.</li>
+<li><code>help</code>: Print a list of commands.</li>
+</ul>
+<h2 id="interpreter-process-mermaid-diagram"><a class="header" href="#interpreter-process-mermaid-diagram">Interpreter process (Mermaid Diagram)</a></h2>
+<pre class="mermaid">graph TD
+    style A fill:#ff99ff,stroke:#333333,stroke-width:4px
+    style B fill:#99bbff,stroke:#333333,stroke-width:4px
+    style C fill:#ffbb99,stroke:#333333,stroke-width:4px
+    style D fill:#9f9,stroke:#333,stroke-width:4px
+    style E fill:#ffb,stroke:#333,stroke-width:4px
+    style F fill:#f99,stroke:#333,stroke-width:4px
+    style G fill:#bbb,stroke:#333,stroke-width:4px
+    style H fill:#c9f,stroke:#333,stroke-width:4px
+    style S fill:#bbb,stroke:#333,stroke-width:4px
+
+    subgraph Interpreter Process
+        S[&quot;&lt;b style='color:black'&gt;Source Code&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;.xn source file&lt;/span&gt;&quot;] --&gt;|Source File| A[&quot;&lt;b style='color:black'&gt;Lexer&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Converts source code to tokens&lt;/span&gt;&quot;]
+        A --&gt;|Token Stream| B[&quot;&lt;b style='color:black'&gt;Parser&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Generates Abstract Syntax Tree&lt;/span&gt;&quot;]
+        B --&gt;|Abstract Syntax Tree| H[&quot;&lt;b style='color:black'&gt;Interpreter&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Interprete xenon code&lt;/span&gt;&quot;]
+        B --&gt;|Abstract Syntax Tree| C[&quot;&lt;b style='color:black'&gt;Semantic Analyzer&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Checks types and logic&lt;/span&gt;&quot;]
+        C --&gt;|Validated AST| D[&quot;&lt;b style='color:black'&gt;Optimizer&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Optimizes and simplifies code&lt;/span&gt;&quot;]
+        D --&gt;|Optimized AST| E[&quot;&lt;b style='color:black'&gt;Fill WASM Module Data&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Prepares WASM structure&lt;/span&gt;&quot;]
+        E --&gt;|WASM Module Structure| F[&quot;&lt;b style='color:black'&gt;Write WASM&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Encodes final binary&lt;/span&gt;&quot;]
+        F --&gt;|WASM Binary| G[&quot;&lt;b style='color:black'&gt;WASM VM&lt;/b&gt;&lt;br/&gt;&lt;span style='color:black'&gt;Executes the binary&lt;/span&gt;&quot;]
+    end
+</pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="virtual-machine-xrun"><a class="header" href="#virtual-machine-xrun">Virtual Machine (xrun)</a></h1>
+<p>This document describes a lightweight virtual machine designed to execute WebAssembly (WASM) files. Inspired by tools like <a href="https://wasmer.io/">Wasmer</a>, this VM enables developers to run WASM binaries, invoke specific functions, and pass arguments directly from the command line.</p>
+<h2 id="key-features"><a class="header" href="#key-features">Key Features</a></h2>
+<ol>
+<li><strong>Command-Line Interface</strong>: The VM accepts WASM files as input and allows invoking specific functions with optional arguments.</li>
+<li><strong>Function Invocation</strong>: Supports invoking a default <code>main</code> function or any user-specified function within the WASM file.</li>
+<li><strong>Input Flexibility</strong>: Accepts command-line arguments to be passed to the WASM module.</li>
+<li><strong>Bytecode Parsing</strong>: Reads and interprets the binary content of the provided WASM file.</li>
+<li><strong>Compact and Modular Design</strong>: Inspired by Wasmer's philosophy, focusing on simplicity and extensibility.</li>
+</ol>
+<h2 id="argument-handling"><a class="header" href="#argument-handling">Argument Handling</a></h2>
+<ul>
+<li><strong>Help (<code>-h</code>, <code>--help</code>)</strong>: Displays usage instructions.</li>
+<li><strong>Invoke Specific Function</strong>: Command format: <code>xrun &lt;file.wasm&gt; --invoke function_name [args...]</code>.</li>
+<li><strong>Default Function</strong>: If no function is specified, the VM invokes <code>main</code> in the WASM file.</li>
+</ul>
+<h3 id="similarity-to-wasmer"><a class="header" href="#similarity-to-wasmer">Similarity to Wasmer</a></h3>
+<ul>
+<li>
+<p><strong>Shared Goals</strong>:</p>
+<ul>
+<li>Execute WASM files efficiently.</li>
+<li>Allow invocation of exported functions with arguments.</li>
+<li>Provide a flexible, CLI-based interface for developers.</li>
+</ul>
+</li>
+<li>
+<p><strong>Key Differences</strong>:</p>
+<ul>
+<li>This VM is more lightweight and tailored to custom workflows.</li>
+<li>It emphasizes modularity and simplicity, with a minimal dependency footprint.</li>
+</ul>
+</li>
+</ul>
+<h2 id="usage-examples"><a class="header" href="#usage-examples">Usage Examples</a></h2>
+<ol>
+<li>
+<p><strong>Invoke Default <code>main</code></strong>:</p>
+<pre><code class="language-bash">xrun my_program.wasm
+</code></pre>
+</li>
+<li>
+<p><strong>Invoke Specific Function</strong>:</p>
+<pre><code class="language-bash">xrun my_program.wasm --invoke myFunction arg1 arg2
+</code></pre>
+</li>
+<li>
+<p><strong>Show Help</strong>:</p>
+<pre><code class="language-bash">xrun -h
+</code></pre>
+</li>
+</ol>
+<h2 id="conclusion-1"><a class="header" href="#conclusion-1">Conclusion</a></h2>
+<p>This virtual machine bridges the gap between WebAssembly execution and custom command-line workflows. By focusing on modularity and performance, it serves as a lightweight alternative to Wasmer for executing and interacting with WASM modules.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="unit-tester-xtest"><a class="header" href="#unit-tester-xtest">Unit Tester (xtest)</a></h1>
+<p>This script provides a mechanism to test a single file containing both source code and inline test definitions. It compiles the source file to WebAssembly, runs the specified tests, and validates the outputs.</p>
+<hr />
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<ul>
+<li>Parses inline test definitions from the source file.</li>
+<li>Compiles the source file to a WebAssembly (<code>.wasm</code>) file.</li>
+<li>Executes the WebAssembly functions and validates their outputs against the expected results.</li>
+<li>Provides clear color-coded feedback for test results.</li>
+<li>Handles edge cases like floating-point comparisons (e.g., appending <code>.0</code> to outputs).</li>
+</ul>
+<hr />
+<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
+<p>Run the script with the following command:</p>
+<pre><code class="language-bash">./xtest &lt;file&gt;
+</code></pre>
+<h3 id="parameters"><a class="header" href="#parameters">Parameters</a></h3>
+<ul>
+<li><code>&lt;file&gt;</code>: The source file to be tested. This file must exist and contain the expected inline test cases.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-bash">./xtest examples/my_test_file.xn
+</code></pre>
+<hr />
+<h2 id="file-requirements"><a class="header" href="#file-requirements">File Requirements</a></h2>
+<p>The source file must:</p>
+<ol>
+<li>Be in a format compatible with the compiler (<code>xcc</code>) and the interpreter (<code>xin</code>).</li>
+<li>Include test definitions in the following format:</li>
+</ol>
+<pre><code>// TEST "function_name" IN "arguments" OUT "expected_output"
+</code></pre>
+<h3 id="example-test-cases"><a class="header" href="#example-test-cases">Example Test Cases</a></h3>
+<pre><code class="language-c">// TEST "add" IN "2 3" OUT "5"
+// TEST "subtract" IN "10 4" OUT "6"
+</code></pre>
+<p>In this example:</p>
+<ul>
+<li>The <code>add</code> function is expected to return <code>5</code> when invoked with <code>2</code> and <code>3</code>.</li>
+<li>The <code>subtract</code> function is expected to return <code>6</code> when invoked with <code>10</code> and <code>4</code>.</li>
+</ul>
+<hr />
+<h2 id="script-workflow"><a class="header" href="#script-workflow">Script Workflow</a></h2>
+<ol>
+<li>
+<p><strong>Argument Validation:</strong></p>
+<ul>
+<li>Ensures that a single file argument is provided.</li>
+<li>Checks if the specified file exists.</li>
+</ul>
+</li>
+<li>
+<p><strong>Test Case Parsing:</strong></p>
+<ul>
+<li>Scans the file for lines matching the <code>// TEST</code> format.</li>
+<li>Extracts the function name, arguments, and expected output.</li>
+</ul>
+</li>
+<li>
+<p><strong>Compilation:</strong></p>
+<ul>
+<li>Compiles the source file to WebAssembly using <code>xcc</code>.</li>
+<li>Handles compilation errors gracefully.</li>
+</ul>
+</li>
+<li>
+<p><strong>Test Execution:</strong></p>
+<ul>
+<li>Invokes each function defined in the test cases.</li>
+<li>Compares the output with the expected result.</li>
+</ul>
+</li>
+<li>
+<p><strong>Results:</strong></p>
+<ul>
+<li>Displays color-coded results for each test:
+<ul>
+<li>Green ✔ for passed tests.</li>
+<li>Red ✘ for failed tests.</li>
+</ul>
+</li>
+<li>Cleans up the generated <code>.wasm</code> file.</li>
+</ul>
+</li>
+<li>
+<p><strong>Exit Status:</strong></p>
+<ul>
+<li>Exits with <code>0</code> if all tests pass.</li>
+<li>Exits with <code>1</code> if any test fails.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="example-output"><a class="header" href="#example-output">Example Output</a></h2>
+<pre><code class="language-bash">Compiled examples/my_test_file.xn to examples/my_test_file.wasm.
+Running test cases:
+add(2 3) = 5 ✔
+subtract(10 4) = 7 (expected 6) ✘
+Some tests failed.
+</code></pre>
+<hr />
+<h2 id="integration-of-tests-in-a-file"><a class="header" href="#integration-of-tests-in-a-file">Integration of Tests in a File</a></h2>
+<ol>
+<li>
+<p>Write your source code as usual.</p>
+</li>
+<li>
+<p>Add inline test definitions for functions you wish to validate. Use the exact format:</p>
+<pre><code>// TEST "function_name" IN "arg1 arg2 ..." OUT "expected_result"
+</code></pre>
+</li>
+<li>
+<p>Ensure that your functions are accessible and invokable as described in the test cases.</p>
+</li>
+<li>
+<p>Save the file and run the script to validate it.</p>
+</li>
+</ol>
+<hr />
+<h2 id="dependencies"><a class="header" href="#dependencies">Dependencies</a></h2>
+<ul>
+<li><code>xcc</code>: Compiler to convert the source code to WebAssembly.</li>
+<li><code>xrun</code>: Virtual machine to execute the generated WebAssembly files.</li>
+<li><code>xin</code>: Interpreter to run the source code directly.</li>
+<li><code>wasmer</code>: Tool to execute the generated WebAssembly files.</li>
+</ul>
+<p>Ensure these tools are installed and accessible in your PATH and/or present in the same directory as where the script is run.</p>
+<hr />
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<ul>
+<li><strong>File Not Found:</strong> Verify the file path and ensure the file exists.</li>
+<li><strong>Compilation Errors:</strong> Check the source code for syntax or compatibility issues.</li>
+<li><strong>Unexpected Results:</strong> Ensure test definitions match the actual function behavior and output.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><pre><code>&lt;program&gt; ::= &lt;statement&gt;*
+
+&lt;statement&gt; ::= &lt;variable_declaration&gt;
+              | &lt;function_declaration&gt;
+              | &lt;while_loop&gt;
+              | &lt;if_statement&gt;
+              | &lt;type_declaration&gt;
+              | &lt;return_statement&gt;
+
+&lt;variable_declaration&gt; ::= "let" &lt;identifier&gt; ":" &lt;type&gt; "=" &lt;expression&gt; ";"
+
+&lt;function_declaration&gt; ::= "fn" &lt;identifier&gt; "(" &lt;parameters&gt; ")" "-&gt;" &lt;type&gt; "{" &lt;body&gt; "}"
+
+&lt;parameters&gt; ::= &lt;parameter&gt; ("," &lt;parameter&gt;)*
+&lt;parameter&gt; ::= &lt;identifier&gt; ":" &lt;type&gt;
+
+&lt;while_loop&gt; ::= "while" "(" &lt;expression&gt; ")" "{" &lt;body&gt; "}"
+
+&lt;if_statement&gt; ::= "if" "(" &lt;expression&gt; ")" "{" &lt;body&gt; "}" &lt;elif_statements&gt; &lt;else_statement&gt;?
+&lt;elif_statements&gt; ::= ("elif" "(" &lt;expression&gt; ")" "{" &lt;body&gt; "}")*
+&lt;else_statement&gt; ::= "else" "{" &lt;body&gt; "}"
+
+&lt;type_declaration&gt; ::= "type" &lt;identifier&gt; "=" &lt;type_definition&gt; ";"
+&lt;type_definition&gt; ::= "{" &lt;field&gt; ("," &lt;field&gt;)* "}"
+                    | "[" &lt;integer&gt; ":" &lt;type&gt; "]"
+                    | "&lt;" &lt;identifier&gt; ("," &lt;identifier&gt;)* "&gt;"
+
+&lt;return_statement&gt; ::= "return" &lt;expression&gt; ";"
+
+&lt;body&gt; ::= &lt;statement&gt;*
+
+&lt;expression&gt; ::= &lt;literal&gt;
+               | &lt;identifier&gt;
+               | &lt;binary_operation&gt;
+               | &lt;unary_operation&gt;
+               | &lt;function_call&gt;
+               | "(" &lt;expression&gt; ")"
+
+&lt;binary_operator&gt; ::= "+" | "-" | "*" | "/" 
+                   | "&amp;&amp;" | "||" 
+                   | "==" | "!=" | "&lt;" | "&gt;" | "&lt;=" | "&gt;=" 
+                   | "&amp;" | "|" | "^" | "&lt;&lt;" | "&gt;&gt;"
+
+&lt;unary_operator&gt; ::= "!" | "-" | "~"
+
+&lt;function_call&gt; ::= &lt;identifier&gt; "(" &lt;arguments&gt; ")"
+&lt;arguments&gt; ::= &lt;expression&gt; ("," &lt;expression&gt;)*
+
+&lt;literal&gt; ::= &lt;integer_literal&gt;
+            | &lt;float_literal&gt;
+            | &lt;string_literal&gt;
+            | &lt;boolean_literal&gt;
+
+&lt;integer_literal&gt; ::= [0-9]+
+&lt;float_literal&gt; ::= [0-9]+"."[0-9]+
+&lt;string_literal&gt; ::= "\"" [^"]* "\""
+&lt;boolean_literal&gt; ::= "true" | "false"
+
+&lt;identifier&gt; ::= [a-zA-Z_][a-zA-Z0-9_]*
+&lt;type&gt; ::= "i32" | "i64" | "f32" | "f64" | &lt;identifier&gt;
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="inspiration-from-rust"><a class="header" href="#inspiration-from-rust">Inspiration from Rust</a></h1>
+<p>Our language draws significant inspiration from Rust, a systems programming language that emphasizes safety, concurrency, and performance. Rust was designed to address common security issues found in other systems programming languages like C and C++. By adopting Rust's principles and features, we aim to create a language that ensures memory safety, provides strong concurrency guarantees, and maintains robust type safety.</p>
+<h1 id="security-review-of-rust"><a class="header" href="#security-review-of-rust">Security Review of Rust</a></h1>
+<p>Rust is a systems programming language that emphasizes safety, concurrency, and performance. It was designed to address common security issues found in other systems programming languages like C and C++. Here is a review of Rust from a security perspective:</p>
+<h2 id="memory-safety"><a class="header" href="#memory-safety">Memory Safety</a></h2>
+<p>One of Rust's primary goals is to ensure memory safety without sacrificing performance. Rust achieves this through its ownership system, which enforces strict rules on how memory is accessed and managed.</p>
+<h3 id="ownership-and-borrowing"><a class="header" href="#ownership-and-borrowing">Ownership and Borrowing</a></h3>
+<p>Rust's ownership model ensures that each piece of data has a single owner, and the compiler enforces rules that prevent data races and dangling pointers. Borrowing allows references to data without transferring ownership, but the compiler ensures that these references do not outlive the data they point to.</p>
+<h3 id="lifetimes"><a class="header" href="#lifetimes">Lifetimes</a></h3>
+<p>Rust uses lifetimes to track how long references to data are valid. This prevents use-after-free errors and ensures that references do not outlive the data they point to.</p>
+<h2 id="concurrency"><a class="header" href="#concurrency">Concurrency</a></h2>
+<p>Rust provides strong guarantees for safe concurrency, which helps prevent common concurrency issues such as data races.</p>
+<h3 id="fearless-concurrency"><a class="header" href="#fearless-concurrency">Fearless Concurrency</a></h3>
+<p>Rust's ownership and type system ensure that data races are impossible at compile time. The language enforces that only one thread can mutate data at a time, and multiple threads can only read data if no thread is mutating it.</p>
+<h3 id="send-and-sync-traits"><a class="header" href="#send-and-sync-traits">Send and Sync Traits</a></h3>
+<p>Rust uses the Send and Sync traits to ensure that types are safe to transfer between threads (Send) and safe to reference from multiple threads (Sync). The compiler enforces these traits, preventing unsafe concurrency patterns.</p>
+<h2 id="type-safety"><a class="header" href="#type-safety">Type Safety</a></h2>
+<p>Rust's strong static type system helps catch many errors at compile time, reducing the likelihood of runtime errors.</p>
+<h3 id="pattern-matching"><a class="header" href="#pattern-matching">Pattern Matching</a></h3>
+<p>Rust's pattern matching allows for exhaustive handling of different cases, reducing the chances of unhandled cases and logic errors.</p>
+<h3 id="option-and-result-types"><a class="header" href="#option-and-result-types">Option and Result Types</a></h3>
+<p>Rust encourages the use of Option and Result types for handling nullable values and error handling, respectively. This reduces the likelihood of null pointer dereferences and unhandled errors.</p>
+<h2 id="undefined-behavior"><a class="header" href="#undefined-behavior">Undefined Behavior</a></h2>
+<p>Rust aims to eliminate undefined behavior, which is a common source of security vulnerabilities in other languages.</p>
+<h3 id="no-null-pointers"><a class="header" href="#no-null-pointers">No Null Pointers</a></h3>
+<p>Rust does not have null pointers, which eliminates a common source of bugs and security vulnerabilities.</p>
+<h3 id="no-buffer-overflows"><a class="header" href="#no-buffer-overflows">No Buffer Overflows</a></h3>
+<p>Rust's safe abstractions prevent buffer overflows by ensuring that all memory accesses are within bounds.</p>
+<h3 id="no-uninitialized-memory"><a class="header" href="#no-uninitialized-memory">No Uninitialized Memory</a></h3>
+<p>Rust ensures that all variables are initialized before use, preventing undefined behavior due to uninitialized memory.</p>
+<h2 id="unsafe-code"><a class="header" href="#unsafe-code">Unsafe Code</a></h2>
+<p>Rust allows the use of unsafe blocks for operations that cannot be checked by the compiler, such as interfacing with low-level hardware or other languages. However, the use of unsafe is explicitly marked, and developers are encouraged to minimize its use.</p>
+<h3 id="explicit-unsafe"><a class="header" href="#explicit-unsafe">Explicit Unsafe</a></h3>
+<p>The unsafe keyword makes it clear where potentially dangerous operations are occurring, allowing developers to audit and review these sections of code more carefully.</p>
+<h3 id="encapsulation"><a class="header" href="#encapsulation">Encapsulation</a></h3>
+<p>Unsafe code can be encapsulated in safe abstractions, allowing the rest of the codebase to remain safe while still performing necessary low-level operations.</p>
+<h2 id="conclusion-2"><a class="header" href="#conclusion-2">Conclusion</a></h2>
+<p>Rust's design prioritizes safety and security, making it a strong choice for systems programming where security is critical. Its ownership model, strong type system, and concurrency guarantees help prevent many common security vulnerabilities found in other languages. While unsafe code is allowed, it is explicitly marked and can be encapsulated to minimize its impact on the overall safety of the codebase. Overall, Rust provides a robust foundation for writing secure and reliable software.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="security-features-implemented"><a class="header" href="#security-features-implemented">Security Features Implemented</a></h1>
+<p>In the Xenon compiler, several security features have been implemented to ensure the safety and reliability of the compiled code. These features are inspired by the security principles found in languages like Rust, which prioritize memory safety and type safety. Below is a description of the key security features implemented in the Xenon compiler:</p>
+<h2 id="memory-safety-1"><a class="header" href="#memory-safety-1">Memory Safety</a></h2>
+<p>Memory safety is a critical aspect of the Xenon compiler, ensuring that programs do not encounter common memory-related vulnerabilities such as buffer overflows, use-after-free errors, and null pointer dereferences.</p>
+<h3 id="no-memory-usage"><a class="header" href="#no-memory-usage">No Memory Usage</a></h3>
+<p>Xenon does not allow memory usage, which is very safe, eliminating a common source of bugs and security vulnerabilities.</p>
+<h2 id="type-safety-1"><a class="header" href="#type-safety-1">Type Safety</a></h2>
+<p>Type safety ensures that operations on data are performed in a manner consistent with the data's type, preventing type-related errors and vulnerabilities.</p>
+<h3 id="strong-static-typing"><a class="header" href="#strong-static-typing">Strong Static Typing</a></h3>
+<p>Xenon uses a strong static type system to catch type errors at compile time. This reduces the likelihood of runtime errors and ensures that operations on data are type-safe.</p>
+<h3 id="const-and-mutable-variables"><a class="header" href="#const-and-mutable-variables">Const and Mutable Variables</a></h3>
+<p>Xenon distinguishes between const and mutable variables, allowing developers to control the mutability of data. This helps prevent unintended modifications to data and ensures that data is accessed safely.</p>
+<h2 id="semantic-analysis"><a class="header" href="#semantic-analysis">Semantic Analysis</a></h2>
+<p>Semantic analysis checks the Abstract Syntax Tree (AST) for semantic errors, ensuring that the program adheres to the language's rules and preventing logical errors.</p>
+<h3 id="type-checking"><a class="header" href="#type-checking">Type Checking</a></h3>
+<p>The semantic analyzer checks for type mismatches, ensuring that operations on data are type-safe.</p>
+<h3 id="variable-initialization"><a class="header" href="#variable-initialization">Variable Initialization</a></h3>
+<p>The semantic analyzer ensures that all variables are initialized before use, preventing undefined behavior due to uninitialized memory.</p>
+<h3 id="return-statement-validation"><a class="header" href="#return-statement-validation">Return Statement Validation</a></h3>
+<p>The semantic analyzer checks that all function bodies have valid return statements, ensuring that functions return the expected types.</p>
+<h2 id="optimizer-and-code-generation"><a class="header" href="#optimizer-and-code-generation">Optimizer and Code Generation</a></h2>
+<p>The optimizer and code generation stages ensure that the compiled code is safe and efficient.</p>
+<h3 id="optimizer-validation"><a class="header" href="#optimizer-validation">Optimizer Validation</a></h3>
+<p>The optimizer validates the code to ensure that it adheres to the language's rules and does not contain any undefined behavior.</p>
+<h3 id="safe-code-generation"><a class="header" href="#safe-code-generation">Safe Code Generation</a></h3>
+<p>The code generation stage ensures that the generated WebAssembly (WASM) code is safe and free from common vulnerabilities such as buffer overflows and use-after-free errors.</p>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<p>Robust error handling ensures that the compiler can gracefully handle errors and provide meaningful feedback to the user.</p>
+<h3 id="result-type"><a class="header" href="#result-type">Result Type</a></h3>
+<p>The Result type is used throughout the compiler to handle errors in a type-safe manner. This ensures that errors are explicitly handled and not ignored.</p>
+<h3 id="descriptive-error-messages"><a class="header" href="#descriptive-error-messages">Descriptive Error Messages</a></h3>
+<p>The compiler provides descriptive error messages, helping users understand and fix issues in their code.</p>
+<h2 id="conclusion-3"><a class="header" href="#conclusion-3">Conclusion</a></h2>
+<p>The Xenon compiler incorporates several security features inspired by Rust to ensure the safety and reliability of the compiled code. These features include memory safety, type safety, semantic analysis, safe code generation, and robust error handling. By prioritizing these security principles, the Xenon compiler aims to provide a secure and reliable foundation for writing and executing Xenon programs.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid.min.js"></script>
+        <script src="mermaid-init.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
