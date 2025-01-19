@@ -2,12 +2,12 @@
 
 # Types
 
-- Signed Integer: `i8`, `i16`, `i32`, `i64`
-- Unsigned Integer: `u8`, `u16`, `u32`, `u64`
+- Signed Integer: `i32`, `i64`
+- Unsigned Integer: `u8`, `u16`, `u32`, `u64` -- Not implemented yet
 - Floating point: `f32`, `f64`
-- Structure: `{ }`
-- Array: `[ ]`
-- Enum: `< >`
+- Structure: `{ }` -- Not implemented yet
+- Array: `[ ]` -- Not implemented yet
+- Enum: `< >` -- Not implemented yet
 # Syntax
 
 - Variable: `let`
@@ -44,7 +44,7 @@ let ptr1: *i32 = 42; // pointer to const i32
 let ptr2: *mut i32 = 42; // pointer to mutable i32
 ```
 
-## Pointers
+## Pointers (Work in progress)
 
 The syntax for pointers in xenon is similar to C, with one important difference, **Dereferencing pointers is done with `@`**
 
@@ -93,7 +93,7 @@ if (a == 42) {
 }
 ```
 
-## Structs
+## Structs (Work in progress)
 
 You can define structs by using brackets and the 'type' keyword, which is used to define a new type like a struct or an enum.
 
@@ -120,7 +120,7 @@ let x: i32 = p[0]; // x = 1
 let y: i32 = p[1]; // y = 2
 ```
 
-## Arrays
+## Arrays (Work in progress)
 
 Arrays are declared with the `[size: type]` syntax.
 ```xn
